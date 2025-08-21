@@ -1,0 +1,27 @@
+{
+    "name": "ssh521/simple-posts",
+    "description": "제목(title), 내용(content), 날짜(date)를 입력받아 저장하는 CRUD 기능 제공",
+    "autoload": {
+        "psr-4": {
+            "Ssh521\\SimplePosts\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "ssh521",
+            "email": "ssh521@naver.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Ssh521\\SimplePosts\\SimplePostsServiceProvider"
+            ]
+        }
+    },
+    "require": {
+        "php": "^8.2",
+        "laravel/framework": "^12.0",
+        "illuminate/support": "^12.0"
+    }
+}
