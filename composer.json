@@ -1,17 +1,23 @@
 {
     "name": "ssh521/simple-posts",
-    "description": "제목(title), 내용(content), 날짜(date)를 입력받아 저장하는 CRUD 기능 제공",
+    "description": "Laravel package for simple CRUD posts functionality with title, content, and date fields",
+    "keywords": ["laravel", "package", "crud", "posts", "blog"],
+    "license": "MIT",
+    "type": "library",
     "autoload": {
         "psr-4": {
             "Ssh521\\SimplePosts\\": "src/"
         }
     },
+    "homepage": "https://github.com/ssh521/simple-posts",
     "authors": [
         {
             "name": "ssh521",
             "email": "ssh521@naver.com"
         }
     ],
+    "minimum-stability": "stable",
+    "prefer-stable": true,
     "extra": {
         "laravel": {
             "providers": [
