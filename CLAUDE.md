@@ -63,7 +63,7 @@ Access the package functionality at `/posts` route in the host Laravel applicati
 ## Package Dependencies
 
 - PHP ^8.2
-- Laravel Framework ^11.0
+- Laravel Framework ^12.0
 - illuminate/support ^12.0
 
 Note: This package is auto-discovered by Laravel through the service provider configuration in composer.json extra section.
