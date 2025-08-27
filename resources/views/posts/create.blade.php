@@ -28,11 +28,11 @@
 
                     <div class="mb-3">
                         <label for="content" class="form-label">내용</label>
-                        <textarea class="form-control @error('content') is-invalid @enderror" 
+                        <input type="hidden" class="form-control @error('content') is-invalid @enderror" 
                                   id="content" 
                                   name="content" 
-                                  rows="5" 
-                                  required>{{ old('content') }}</textarea>
+                                  required value="{{ old('content') }}">
+                        <div id="editor"></div>
                         @error('content')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -60,4 +60,37 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const editor = new toastui.Editor({
+        el: document.querySelector('#editor'),
+        height: '600px',
+        initialEditType: 'markdown',
+        previewStyle: 'vertical',
+        initialValue: document.querySelector('#content').value || ''
+    });
+
+    // 폼 제출 시 에디터 내용을 hidden input에 동기화
+    document.querySelector('form').addEventListener('submit', function(e) {
+        // 에디터 내용을 hidden input에 저장
+        const content = editor.getMarkdown();
+        document.querySelector('#content').value = content;
+        
+        // 내용이 비어있으면 제출 방지
+        if (!content.trim()) {
+            e.preventDefault();
+            alert('내용을 입력해주세요.');
+            return false;
+        }
+        
+        console.log('제출할 내용:', content); // 디버깅용
+    });
+
+    // 에디터 내용이 변경될 때마다 hidden input 업데이트 (실시간 동기화)
+    editor.on('change', function() {
+        document.querySelector('#content').value = editor.getMarkdown();
+    });
+});
+</script>
 @endsection

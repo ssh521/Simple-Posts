@@ -9,9 +9,7 @@
         <small class="text-muted">{{ $post->date->format('Y-m-d') }}</small>
     </div>
     <div class="card-body">
-        <div class="mb-4">
-            {!! nl2br(e($post->content)) !!}
-        </div>
+        <div class="mb-4" id="viewer"></div>
         
         <div class="d-flex gap-2">
             <a href="{{ route('posts.index') }}" class="btn btn-secondary">목록으로</a>
@@ -25,4 +23,14 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const viewer = new toastui.Editor.factory({
+        el: document.querySelector('#viewer'),
+        viewer: true,
+        initialValue: {!! json_encode($post->content) !!}
+    });
+});
+</script>
 @endsection
