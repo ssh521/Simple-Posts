@@ -119,4 +119,31 @@ class PostController extends Controller
                 ->with('error', '게시글 삭제 중 오류가 발생했습니다. 다시 시도해주세요.');
         }
     }
+
+    public function uploadImage(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        try {
+            $image = $request->file('image');
+            $filename = time() . '_' . $image->getClientOriginalName();
+            $path = $image->storeAs('posts/images', $filename, 'public');
+            
+            $url = asset('storage/' . $path);
+            
+            return response()->json([
+                'success' => true,
+                'url' => $url,
+                'filename' => $filename
+            ]);
+        } catch (\Exception) {
+            return response()->json([
+                'success' => false,
+                'message' => '이미지 업로드 중 오류가 발생했습니다.'
+            ], 500);
+        }
+    }
+
 }

@@ -15,6 +15,11 @@ class SimplePostsServiceProvider extends ServiceProvider
 
     public function boot()
     {
+        // php artisan vendor:publish --tag=simple-posts-config
+        // php artisan vendor:publish --tag=simple-posts-views
+        // php artisan vendor:publish --tag=simple-posts-migrations
+        // php artisan vendor:publish --tag=simple-posts-routes
+
         // 라우트 모델 바인딩 설정 (사용자가 라우트를 등록할 때 사용할 수 있도록)
         Route::model('post', Post::class);
         
