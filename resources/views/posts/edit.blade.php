@@ -62,61 +62,12 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const editor = new toastui.Editor({
-            el: document.querySelector('#editor'),
-            height: '600px',
-            initialEditType: 'markdown',
-            previewStyle: 'vertical',
-            initialValue: document.querySelector('#content').value || '',
-            hooks: {
-                addImageBlobHook(blob, callback) {  // 이미지 업로드 로직 커스텀
-                    const formData = new FormData();
-                    formData.append('image', blob);
-                    formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
-                    
-                    fetch('{{ route("posts.upload-image") }}', {
-                        method: 'POST',
-                        body: formData,
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest',
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            callback(data.url, data.filename);
-                        } else {
-                            alert('이미지 업로드 실패: ' + (data.message || '알 수 없는 오류'));
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('이미지 업로드 중 오류가 발생했습니다.');
-                    });
-                }
-            }
-        });
-    
-        // 폼 제출 시 에디터 내용을 hidden input에 동기화
-        document.querySelector('form').addEventListener('submit', function(e) {
-            // 에디터 내용을 hidden input에 저장
-            const content = editor.getMarkdown();
-            document.querySelector('#content').value = content;
-            
-            // 내용이 비어있으면 제출 방지
-            if (!content.trim()) {
-                e.preventDefault();
-                alert('내용을 입력해주세요.');
-                return false;
-            }
-            
-            console.log('제출할 내용:', content); // 디버깅용
-        });
-    
-        // 에디터 내용이 변경될 때마다 hidden input 업데이트 (실시간 동기화)
-        editor.on('change', function() {
-            document.querySelector('#content').value = editor.getMarkdown();
-        });
+        const editorElement = document.querySelector('#editor');
+        const formElement = document.querySelector('form');
+        const contentInput = document.querySelector('#content');
+        
+        const editor = initializeEditor(editorElement, contentInput.value || '');
+        setupFormSubmission(editor, formElement, contentInput);
     });
-    </script>
+</script>
 @endsection
