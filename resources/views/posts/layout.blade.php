@@ -52,21 +52,6 @@
                 usageStatistics: false,
                 viewer: true,
                 previewHighlight: false,
-                customHTMLRenderer: {
-                    image(node, context) {
-                        const { destination, title } = node;
-                        return {
-                            type: 'openTag',
-                            tagName: 'img',
-                            attributes: {
-                                src: destination,
-                                alt: node.firstChild ? node.firstChild.literal : '',
-                                title: title || '',
-                                style: 'max-width: 100%; height: auto;'
-                            }
-                        };
-                    }
-                },
                 hooks: {
                     addImageBlobHook(blob, callback) {
                         const formData = new FormData();

@@ -10,6 +10,7 @@ Route::prefix(config('simple-posts.route.prefix', 'posts'))
         Route::get('/', [PostController::class, 'index'])->name('index');
         Route::get('/create', [PostController::class, 'create'])->name('create');
         Route::post('/', [PostController::class, 'store'])->name('store');
+        Route::post('/upload-image', [PostController::class, 'uploadImage'])->name('upload-image');
         Route::get('/{post}', [PostController::class, 'show'])->name('show');
         Route::get('/{post}/edit', [PostController::class, 'edit'])->name('edit');
         Route::put('/{post}', [PostController::class, 'update'])->name('update');
