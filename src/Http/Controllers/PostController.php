@@ -123,15 +123,17 @@ class PostController extends Controller
     public function uploadImage(Request $request)
     {
         $request->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:20480',
         ]);
 
         try {
             $image = $request->file('image');
-            $filename = time() . '_' . $image->getClientOriginalName();
+            $originalName = $image->getClientOriginalName();
+            $safeFilename = str_replace(' ', '_', $originalName);
+            $filename = time() . '_' . $safeFilename;
             $path = $image->storeAs('posts/images', $filename, 'public');
             
-            $url = asset('storage/' . $path);
+            $url = asset('storage/' . rawurlencode($path));
             
             return response()->json([
                 'success' => true,

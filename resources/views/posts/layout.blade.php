@@ -10,6 +10,8 @@
     <!-- toastui-editor -->
     <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
     <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
     <!-- 커스텀 스타일 -->
     <style>
@@ -32,11 +34,83 @@
             border: 1px solid #d1d5db;
             border-radius: 0.375rem;
         }
+
+        /* 전체화면 관련 스타일 */
+        .toastui-editor-full-screen {
+            position: fixed !important;
+            top: 0;
+            left: 0;
+            width: 100% !important;
+            height: 100vh !important;
+            z-index: 9999;
+            background: white;
+        }
+
+        .fullscreen {
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            width: 22px !important;
+            height: 22px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            background: none !important;
+            border: none !important;
+            cursor: pointer;
+            vertical-align: middle;
+            position: relative;
+            top: 1px;
+        }
+
+        .fullscreen i {
+            font-size: 14px;
+            color: #333;
+            width: auto;
+            height: auto;
+            line-height: 1;
+            position: relative;
+            top: -1px;
+        }
+
+        .fullscreen:hover i {
+            color: #4b4b4b;
+        }
     </style>
 
     <script>
+        const createFullscreenButton = (toggleCallback) => {
+            const button = document.createElement('button');
+            Object.assign(button, {
+                className: 'toastui-editor-toolbar-icons fullscreen',
+                title: '전체화면',
+                innerHTML: '<i class="fas fa-expand"></i>',
+                style: { backgroundImage: 'none', margin: '0' },
+                onclick: (e) => {
+                    e.preventDefault();
+                    toggleCallback();
+                }
+            });
+            return button;
+        };
+
+        const handleFullscreen = (editor, editorElement) => {
+            const editorEl = editorElement.parentElement;
+            if (!editorEl) return;
+
+            const isFullscreen = editorEl.classList.contains('toastui-editor-full-screen');
+            const newHeight = isFullscreen ? '600px' : '100vh';
+            editor.setHeight(newHeight);
+            editorEl.classList.toggle('toastui-editor-full-screen');
+            document.body.style.overflow = isFullscreen ? '' : 'hidden';
+
+            const button = editorElement.querySelector('.fullscreen i');
+            if (button) {
+                button.className = isFullscreen ? 'fas fa-expand' : 'fas fa-compress';
+            }
+        };
+
         function initializeEditor(editorElement, initialValue = '') {
-            return new toastui.Editor({
+            const editor = new toastui.Editor({
                 el: editorElement,
                 height: '600px',
                 initialEditType: 'markdown',
@@ -47,7 +121,12 @@
                     ['hr', 'quote'],
                     ['ul', 'ol', 'task', 'indent', 'outdent'],
                     ['table', 'image', 'link'],
-                    ['code', 'codeblock']
+                    ['code', 'codeblock'],
+                    [{
+                        el: createFullscreenButton(() => handleFullscreen(editor, editorElement)),
+                        tooltip: '전체화면',
+                        name: 'fullscreen'
+                    }]
                 ],
                 usageStatistics: false,
                 viewer: true,
