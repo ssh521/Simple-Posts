@@ -129,11 +129,14 @@ class PostController extends Controller
         try {
             $image = $request->file('image');
             $originalName = $image->getClientOriginalName();
-            $safeFilename = str_replace(' ', '_', $originalName);
+            // 파일명의 모든 공백을 언더바로 변경
+            $nameWithoutSpaces = preg_replace('/\s+/', '_', $originalName);
+            // 특수문자 제거 (언더바 제외)
+            $safeFilename = preg_replace('/[^a-zA-Z0-9가-힣._-]/', '', $nameWithoutSpaces);
             $filename = time() . '_' . $safeFilename;
             $path = $image->storeAs('posts/images', $filename, 'public');
             
-            $url = asset('storage/' . rawurlencode($path));
+            $url = asset('storage/' . $path);
             
             return response()->json([
                 'success' => true,

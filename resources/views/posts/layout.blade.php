@@ -158,9 +158,7 @@
                             })
                             .then(data => {
                                 if (data.success && data.url) {
-                                    // 백슬래시 제거
-                                    const cleanUrl = data.url.replace(/\\/g, '');
-                                    callback(cleanUrl, data.filename || 'uploaded-image');
+                                    callback(data.url, data.filename || 'uploaded-image');
                                 } else {
                                     alert('이미지 업로드 실패: ' + (data.message || '알 수 없는 오류'));
                                 }
