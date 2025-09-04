@@ -24,7 +24,7 @@ class SimplePostsServiceProvider extends ServiceProvider
         Route::model('post', Post::class);
         
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'simple-posts');
-        $this->loadRoutesFrom(__DIR__.'/Http/routes/web.php');
+        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
         $this->mergeConfigFrom(__DIR__.'/../config/simple-posts.php', 'simple-posts');
         
         if (config('simple-posts.auto_load_migrations', true)) {
@@ -45,7 +45,7 @@ class SimplePostsServiceProvider extends ServiceProvider
             ], 'simple-posts-config');
             
             $this->publishes([
-                __DIR__.'/Http/routes/web.php' => base_path('routes/simple-posts.php'),
+                __DIR__.'/../routes/web.php' => base_path('routes/simple-posts.php'),
             ], 'simple-posts-routes');
         }
     }
