@@ -24,6 +24,7 @@ class SimplePostsServiceProvider extends ServiceProvider
         Route::model('post', Post::class);
         
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'simple-posts');
+        $this->loadRoutesFrom(__DIR__.'/Http/routes/web.php');
         
         if (config('simple-posts.auto_load_migrations', true)) {
             $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
