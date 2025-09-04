@@ -25,7 +25,7 @@ class SimplePostsServiceProvider extends ServiceProvider
         
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'simple-posts');
         $this->loadRoutesFrom(__DIR__.'/Http/routes/web.php');
-        $this->loadConfigFrom(__DIR__.'/../config/simple-posts.php', 'simple-posts');
+        $this->mergeConfigFrom(__DIR__.'/../config/simple-posts.php', 'simple-posts');
         
         if (config('simple-posts.auto_load_migrations', true)) {
             $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
