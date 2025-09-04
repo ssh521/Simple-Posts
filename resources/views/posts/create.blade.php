@@ -64,9 +64,41 @@
         const editorElement = document.querySelector('#editor');
         const formElement = document.querySelector('form');
         const contentInput = document.querySelector('#content');
+
+        if (!window.toastui || !window.toastui.Editor) {
+            console.error('Toast UI Editor가 로드되지 않았습니다.');
+            return;
+        }
+        
+        if (!editorElement) {
+            console.error('#editor 엘리먼트를 찾을 수 없습니다.');
+            return;
+        }
+
+        if (!formElement) {
+            console.error('form 엘리먼트를 찾을 수 없습니다.');
+            return;
+        }
+
+        if (!contentInput) {
+            console.error('#content input 엘리먼트를 찾을 수 없습니다.');
+            return;
+        }
         
         const editor = initializeEditor(editorElement, contentInput.value || '');
-        setupFormSubmission(editor, formElement, contentInput);
+        
+        if (editor) {
+            // 에디터 내용이 변경될 때마다 hidden input 업데이트
+            editor.on('change', () => {
+                contentInput.value = editor.getMarkdown();
+            });
+            
+            // 폼 제출 시 최종 내용 저장
+            setupFormSubmission(editor, formElement, contentInput);
+        } else {
+            console.error('에디터를 초기화하는데 실패했습니다.');
+            alert('에디터를 초기화하는데 실패했습니다. 페이지를 새로고침 해주세요.');
+        }
     });
 </script>
 @endsection

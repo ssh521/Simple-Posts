@@ -110,62 +110,81 @@
         };
 
         function initializeEditor(editorElement, initialValue = '') {
-            const editor = new toastui.Editor({
-                el: editorElement,
-                height: '600px',
-                initialEditType: 'markdown',
-                previewStyle: 'vertical',
-                initialValue: initialValue,
-                toolbarItems: [
-                    ['heading', 'bold', 'italic', 'strike'],
-                    ['hr', 'quote'],
-                    ['ul', 'ol', 'task', 'indent', 'outdent'],
-                    ['table', 'image', 'link'],
-                    ['code', 'codeblock'],
-                    [{
-                        el: createFullscreenButton(() => handleFullscreen(editor, editorElement)),
-                        tooltip: '전체화면',
-                        name: 'fullscreen'
-                    }]
-                ],
-                usageStatistics: false,
-                viewer: true,
-                previewHighlight: false,
-                hooks: {
-                    addImageBlobHook(blob, callback) {
-                        const formData = new FormData();
-                        formData.append('image', blob);
-                        formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
-                        
-                        fetch('{{ route("posts.upload-image") }}', {
-                            method: 'POST',
-                            body: formData,
-                            headers: {
-                                'X-Requested-With': 'XMLHttpRequest',
-                            }
-                        })
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error(`HTTP error! status: ${response.status}`);
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            if (data.success && data.url) {
-                                callback(data.url, data.filename || 'uploaded-image');
-                            } else {
-                                alert('이미지 업로드 실패: ' + (data.message || '알 수 없는 오류'));
-                            }
-                        })
-                        .catch(error => {
-                            alert('이미지 업로드 중 오류가 발생했습니다: ' + error.message);
-                        });
+            if (!editorElement) {
+                console.error('에디터 엘리먼트를 찾을 수 없습니다.');
+                return null;
+            }
+
+            try {
+                const editor = new toastui.Editor({
+                    el: editorElement,
+                    height: '600px',
+                    initialEditType: 'markdown',
+                    previewStyle: 'vertical',
+                    initialValue: initialValue,
+                    toolbarItems: [
+                        ['heading', 'bold', 'italic', 'strike'],
+                        ['hr', 'quote'],
+                        ['ul', 'ol', 'task', 'indent', 'outdent'],
+                        ['table', 'image', 'link'],
+                        ['code', 'codeblock'],
+                        [{
+                            el: createFullscreenButton(() => handleFullscreen(editor, editorElement)),
+                            tooltip: '전체화면',
+                            name: 'fullscreen'
+                        }]
+                    ],
+                    usageStatistics: false,
+                    viewer: true,
+                    previewHighlight: false,
+                    hooks: {
+                        addImageBlobHook(blob, callback) {
+                            const formData = new FormData();
+                            formData.append('image', blob);
+                            formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+                            
+                            fetch('{{ route("posts.upload-image") }}', {
+                                method: 'POST',
+                                body: formData,
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest',
+                                }
+                            })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error(`HTTP error! status: ${response.status}`);
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                if (data.success && data.url) {
+                                    // 백슬래시 제거
+                                    const cleanUrl = data.url.replace(/\\/g, '');
+                                    callback(cleanUrl, data.filename || 'uploaded-image');
+                                } else {
+                                    alert('이미지 업로드 실패: ' + (data.message || '알 수 없는 오류'));
+                                }
+                            })
+                            .catch(error => {
+                                alert('이미지 업로드 중 오류가 발생했습니다: ' + error.message);
+                            });
+                        }
                     }
-                }
-            });
+                });
+
+                return editor;
+            } catch (error) {
+                console.error('에디터 초기화 중 오류 발생:', error);
+                return null;
+            }
         }
 
         function setupFormSubmission(editor, formElement, contentInput) {
+            if (!editor || typeof editor.getMarkdown !== 'function') {
+                console.error('유효하지 않은 에디터 객체입니다.');
+                return;
+            }
+
             formElement.addEventListener('submit', function(e) {
                 const content = editor.getMarkdown();
                 contentInput.value = content;
@@ -175,10 +194,6 @@
                     alert('내용을 입력해주세요.');
                     return false;
                 }
-            });
-
-            editor.on('change', function() {
-                contentInput.value = editor.getMarkdown();
             });
         }
     </script>

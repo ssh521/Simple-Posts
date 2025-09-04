@@ -9,7 +9,7 @@
             <h2 class="text-xl font-semibold text-gray-800">게시글 수정</h2>
         </div>
         <div class="p-6">
-            <form method="POST" action="{{ route('posts.update', $post) }}">
+            <form method="POST" action="{{ route('posts.update', ['post' => $post]) }}">
                 @csrf
                 @method('PUT')
                 
@@ -53,7 +53,7 @@
 
                 <div class="flex gap-3">
                     <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition duration-200">수정</button>
-                    <a href="{{ route('posts.show', $post) }}" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md transition duration-200">취소</a>
+                    <a href="{{ route('posts.show', ['post' => $post]) }}" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md transition duration-200">취소</a>
                 </div>
             </form>
         </div>
