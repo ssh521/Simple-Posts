@@ -126,7 +126,7 @@ class SimplePostController extends Controller
     public function uploadImage(Request $request)
     {
         $request->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:20480',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:512000',
         ]);
 
         try {
