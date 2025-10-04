@@ -7,16 +7,16 @@ use Illuminate\Routing\Controller;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Log;
 
-use Ssh521\SimplePosts\Models\Post;
+use Ssh521\SimplePosts\Models\SimplePost;
 use Ssh521\SimplePosts\Http\Requests\PostRequest;
 
-class PostController extends Controller
+class SimplePostController extends Controller
 {
     public function index()
     {
         try {
             $perPage = config('simple-posts.pagination.per_page', 10);
-            $posts = Post::orderBy('date', 'desc')->paginate($perPage);
+            $posts = SimplePost::orderBy('date', 'desc')->paginate($perPage);
             return view('simple-posts::posts.index', compact('posts'))->withErrors([]);
         } catch (\Exception $e) {
             Log::error('게시글 목록 조회 중 오류 발생: ' . $e->getMessage());
@@ -26,7 +26,7 @@ class PostController extends Controller
         }
     }
 
-    public function show(Post $post)
+    public function show(SimplePost $post)
     {
         try {
             return view('simple-posts::posts.show', compact('post'))->withErrors([]);
@@ -55,7 +55,7 @@ class PostController extends Controller
     public function store(PostRequest $request)
     {
         try {
-            $post = Post::create($request->validated());
+            $post = SimplePost::create($request->validated());
             Log::info('새 게시글 생성됨: ID ' . $post->id);
             return redirect()->route('posts.index')
                 ->with('success', '게시글이 성공적으로 생성되었습니다.');
@@ -67,7 +67,7 @@ class PostController extends Controller
         }
     }
 
-    public function edit(Post $post)
+    public function edit(SimplePost $post)
     {
         try {
             return view('simple-posts::posts.edit', compact('post'))->withErrors([]);
@@ -82,7 +82,7 @@ class PostController extends Controller
         }
     }
 
-    public function update(PostRequest $request, Post $post)
+    public function update(PostRequest $request, SimplePost $post)
     {
         try {
             $post->update($request->validated());
@@ -101,7 +101,7 @@ class PostController extends Controller
         }
     }
 
-    public function destroy(Post $post)
+    public function destroy(SimplePost $post)
     {
         try {
             $postId = $post->id;

@@ -5,7 +5,7 @@ namespace Ssh521\SimplePosts\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Post extends Model
+class SimplePost extends Model
 {
     use HasFactory;
 
@@ -19,10 +19,13 @@ class Post extends Model
         'date' => 'date',
     ];
 
-    public function __construct(array $attributes = [])
+    /**
+     * Get the table associated with the model.
+     *
+     * @return string
+     */
+    public function getTable()
     {
-        parent::__construct($attributes);
-        
-        $this->setTable(config('simple-posts.table_name', 'simple_posts'));
+        return config('simple-posts.table_name', 'simple_posts');
     }
 }

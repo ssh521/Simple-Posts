@@ -28,18 +28,18 @@ php artisan migrate
 `routes/web.php` 파일에 다음 라우트를 추가하세요:
 
 ```php
-use Ssh521\SimplePosts\Http\Controllers\PostController;
+use Ssh521\SimplePosts\Http\Controllers\SimplePostController;
 
 Route::prefix('posts')
     ->name('posts.')
     ->group(function () {
-        Route::get('/', [PostController::class, 'index'])->name('index');
-        Route::get('/create', [PostController::class, 'create'])->name('create');
-        Route::post('/', [PostController::class, 'store'])->name('store');
-        Route::get('/{post}', [PostController::class, 'show'])->name('show');
-        Route::get('/{post}/edit', [PostController::class, 'edit'])->name('edit');
-        Route::put('/{post}', [PostController::class, 'update'])->name('update');
-        Route::delete('/{post}', [PostController::class, 'destroy'])->name('destroy');
+        Route::get('/', [SimplePostController::class, 'index'])->name('index');
+        Route::get('/create', [SimplePostController::class, 'create'])->name('create');
+        Route::post('/', [SimplePostController::class, 'store'])->name('store');
+        Route::get('/{post}', [SimplePostController::class, 'show'])->name('show');
+        Route::get('/{post}/edit', [SimplePostController::class, 'edit'])->name('edit');
+        Route::put('/{post}', [SimplePostController::class, 'update'])->name('update');
+        Route::delete('/{post}', [SimplePostController::class, 'destroy'])->name('destroy');
     });
 ```
 
@@ -94,7 +94,7 @@ Simple-Posts/
 ├── resources/views/posts/            # Blade 템플릿
 ├── src/
 │   ├── Http/
-│   │   ├── Controllers/PostController.php
+│   │   ├── Controllers/SimplePostController.php
 │   │   ├── Models/Post.php
 │   │   ├── Requests/PostRequest.php
 │   │   └── routes/web.php
