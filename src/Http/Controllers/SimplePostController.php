@@ -44,7 +44,7 @@ class SimplePostController extends Controller
     public function create()
     {
         try {
-            return view('simple-posts::posts.create');
+            return view('simple-posts::posts.create')->withErrors([]);
         } catch (\Exception $e) {
             Log::error('게시글 작성 페이지 로드 중 오류 발생: ' . $e->getMessage());
             return redirect()->route('posts.index')
@@ -71,7 +71,7 @@ class SimplePostController extends Controller
     {
         try {
             $post = SimplePost::findOrFail($id);
-            return view('simple-posts::posts.edit', compact('post'));
+            return view('simple-posts::posts.edit', compact('post'))->withErrors([]);
         } catch (ModelNotFoundException $e) {
             Log::warning('존재하지 않는 게시글 수정 시도: ID ' . $id);
             return redirect()->route('posts.index')
