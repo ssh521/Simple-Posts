@@ -20,10 +20,10 @@ This is a Laravel package `ssh521/simple-posts` that provides CRUD functionality
 ### Key Components
 
 **Service Provider (`src/SimplePostsServiceProvider.php`)**
-- Auto-loads routes from `src/Http/routes/web.php`
+- Auto-loads routes from `routes/web.php`
 - Registers views with `simple-posts` namespace
-- Auto-loads migrations from `database/migrations/`
-- Publishes views and migrations when running in console
+- Auto-loads migrations conditionally from `database/migrations/` (configurable)
+- Publishes views, migrations, config, and routes when running in console
 
 **Database Schema**
 - Single `posts` table with: id, title (string), content (text), date (date), timestamps
@@ -55,6 +55,12 @@ php artisan vendor:publish --tag=simple-posts-views
 
 # Publish migrations for customization
 php artisan vendor:publish --tag=simple-posts-migrations
+
+# Publish config for customization
+php artisan vendor:publish --tag=simple-posts-config
+
+# Publish routes for customization
+php artisan vendor:publish --tag=simple-posts-routes
 ```
 
 ### Testing Package Integration

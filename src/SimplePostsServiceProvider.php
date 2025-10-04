@@ -4,7 +4,7 @@ namespace Ssh521\SimplePosts;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
-use Ssh521\SimplePosts\Http\Models\Post;
+use Ssh521\SimplePosts\Models\Post;
 
 class SimplePostsServiceProvider extends ServiceProvider
 {
@@ -25,7 +25,6 @@ class SimplePostsServiceProvider extends ServiceProvider
         
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'simple-posts');
         $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
-        $this->mergeConfigFrom(__DIR__.'/../config/simple-posts.php', 'simple-posts');
         
         if (config('simple-posts.auto_load_migrations', true)) {
             $this->loadMigrationsFrom(__DIR__.'/../database/migrations');

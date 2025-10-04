@@ -1,6 +1,6 @@
 <?php
 
-namespace Ssh521\SimplePosts\Http\Models;
+namespace Ssh521\SimplePosts\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

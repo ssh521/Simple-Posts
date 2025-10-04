@@ -7,7 +7,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Log;
 
-use Ssh521\SimplePosts\Http\Models\Post;
+use Ssh521\SimplePosts\Models\Post;
 use Ssh521\SimplePosts\Http\Requests\PostRequest;
 
 class PostController extends Controller
