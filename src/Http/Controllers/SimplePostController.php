@@ -16,7 +16,7 @@ class SimplePostController extends Controller
     {
         try {
             $perPage = config('simple-posts.pagination.per_page', 10);
-            $posts = SimplePost::orderBy('date', 'desc')->paginate($perPage);
+            $posts = SimplePost::orderBy('created_at', 'desc')->paginate($perPage);
             return view('simple-posts::posts.index', compact('posts'));
         } catch (\Exception $e) {
             Log::error('게시글 목록 조회 중 오류 발생: ' . $e->getMessage());
