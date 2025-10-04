@@ -96,7 +96,7 @@ Simple-Posts/
 │   ├── Http/
 │   │   ├── Controllers/SimplePostController.php
 │   │   ├── Models/Post.php
-│   │   ├── Requests/PostRequest.php
+│   │   ├── Requests/SimplePostRequest.php
 │   │   └── routes/web.php
 │   └── SimplePostsServiceProvider.php
 └── composer.json

@@ -4,7 +4,7 @@ namespace Ssh521\SimplePosts\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PostRequest extends FormRequest
+class SimplePostRequest extends FormRequest
 {
     public function authorize()
     {

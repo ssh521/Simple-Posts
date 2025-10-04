@@ -13,7 +13,7 @@ This is a Laravel package `ssh521/simple-posts` that provides CRUD functionality
 - **Service Provider**: `SimplePostsServiceProvider` handles package bootstrapping
 - **Model**: `Post` (Eloquent model) with fillable fields: title, content, date
 - **Controller**: `SimplePostController` with full CRUD operations
-- **Request Validation**: `PostRequest` with Korean error messages
+- **Request Validation**: `SimplePostRequest` with Korean error messages
 - **Views**: Blade templates using Bootstrap 5 with `simple-posts::` namespace
 - **Routes**: RESTful routes prefixed with `/posts`
 

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Log;
 
 use Ssh521\SimplePosts\Models\SimplePost;
-use Ssh521\SimplePosts\Http\Requests\PostRequest;
+use Ssh521\SimplePosts\Http\Requests\SimplePostRequest;
 
 class SimplePostController extends Controller
 {
@@ -52,7 +52,7 @@ class SimplePostController extends Controller
         }
     }
 
-    public function store(PostRequest $request)
+    public function store(SimplePostRequest $request)
     {
         try {
             $post = SimplePost::create($request->validated());
@@ -82,7 +82,7 @@ class SimplePostController extends Controller
         }
     }
 
-    public function update(PostRequest $request, SimplePost $post)
+    public function update(SimplePostRequest $request, SimplePost $post)
     {
         try {
             $post->update($request->validated());
