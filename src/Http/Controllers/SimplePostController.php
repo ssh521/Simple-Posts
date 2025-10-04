@@ -17,21 +17,21 @@ class SimplePostController extends Controller
         try {
             $perPage = config('simple-posts.pagination.per_page', 10);
             $posts = SimplePost::orderBy('date', 'desc')->paginate($perPage);
-            return view('simple-posts::posts.index', compact('posts'))->withErrors([]);
+            return view('simple-posts::posts.index', compact('posts'));
         } catch (\Exception $e) {
             Log::error('게시글 목록 조회 중 오류 발생: ' . $e->getMessage());
             return view('simple-posts::posts.index', ['posts' => collect()])
-                ->with('error', '게시글 목록을 불러오는 중 오류가 발생했습니다.')
-                ->withErrors([]);
+                ->with('error', '게시글 목록을 불러오는 중 오류가 발생했습니다.');
         }
     }
 
-    public function show(SimplePost $post)
+    public function show($id)
     {
         try {
-            return view('simple-posts::posts.show', compact('post'))->withErrors([]);
+            $post = SimplePost::findOrFail($id);
+            return view('simple-posts::posts.show', compact('post'));
         } catch (ModelNotFoundException $e) {
-            Log::warning('존재하지 않는 게시글 접근 시도: ID ' . request()->route('post'));
+            Log::warning('존재하지 않는 게시글 접근 시도: ID ' . $id);
             return redirect()->route('posts.index')
                 ->with('error', '요청하신 게시글을 찾을 수 없습니다.');
         } catch (\Exception $e) {
@@ -44,7 +44,7 @@ class SimplePostController extends Controller
     public function create()
     {
         try {
-            return view('simple-posts::posts.create')->withErrors([]);
+            return view('simple-posts::posts.create');
         } catch (\Exception $e) {
             Log::error('게시글 작성 페이지 로드 중 오류 발생: ' . $e->getMessage());
             return redirect()->route('posts.index')
@@ -67,12 +67,13 @@ class SimplePostController extends Controller
         }
     }
 
-    public function edit(SimplePost $post)
+    public function edit($id)
     {
         try {
-            return view('simple-posts::posts.edit', compact('post'))->withErrors([]);
+            $post = SimplePost::findOrFail($id);
+            return view('simple-posts::posts.edit', compact('post'));
         } catch (ModelNotFoundException $e) {
-            Log::warning('존재하지 않는 게시글 수정 시도: ID ' . request()->route('post'));
+            Log::warning('존재하지 않는 게시글 수정 시도: ID ' . $id);
             return redirect()->route('posts.index')
                 ->with('error', '수정하려는 게시글을 찾을 수 없습니다.');
         } catch (\Exception $e) {
@@ -82,15 +83,16 @@ class SimplePostController extends Controller
         }
     }
 
-    public function update(SimplePostRequest $request, SimplePost $post)
+    public function update(SimplePostRequest $request, $id)
     {
         try {
+            $post = SimplePost::findOrFail($id);
             $post->update($request->validated());
             Log::info('게시글 수정됨: ID ' . $post->id);
             return redirect()->route('posts.show', $post)
                 ->with('success', '게시글이 성공적으로 수정되었습니다.');
         } catch (ModelNotFoundException $e) {
-            Log::warning('존재하지 않는 게시글 수정 시도: ID ' . $post->id);
+            Log::warning('존재하지 않는 게시글 수정 시도: ID ' . $id);
             return redirect()->route('posts.index')
                 ->with('error', '수정하려는 게시글을 찾을 수 없습니다.');
         } catch (\Exception $e) {
@@ -101,16 +103,17 @@ class SimplePostController extends Controller
         }
     }
 
-    public function destroy(SimplePost $post)
+    public function destroy($id)
     {
         try {
+            $post = SimplePost::findOrFail($id);
             $postId = $post->id;
             $post->delete();
             Log::info('게시글 삭제됨: ID ' . $postId);
             return redirect()->route('posts.index')
                 ->with('success', '게시글이 성공적으로 삭제되었습니다.');
         } catch (ModelNotFoundException $e) {
-            Log::warning('존재하지 않는 게시글 삭제 시도: ID ' . request()->route('post'));
+            Log::warning('존재하지 않는 게시글 삭제 시도: ID ' . $id);
             return redirect()->route('posts.index')
                 ->with('error', '삭제하려는 게시글을 찾을 수 없습니다.');
         } catch (\Exception $e) {

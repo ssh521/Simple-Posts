@@ -29,7 +29,7 @@
                                     {{ $post->title }}
                                 </a>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $post->date->format('Y-m-d') }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $post->date->format(config('simple-posts.date_format', 'Y-m-d')) }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <a href="{{ route('posts.edit', $post) }}" class="text-blue-600 hover:text-blue-800 border border-blue-600 hover:bg-blue-50 px-3 py-1 rounded text-xs transition duration-200 mr-2">수정</a>
                                 <form method="POST" action="{{ route('posts.destroy', $post) }}" class="inline">
