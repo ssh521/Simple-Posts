@@ -37,7 +37,7 @@ cp composer.json composer.json.backup
 
 # composer.json 수정
 echo "📝 composer.json을 수정합니다..."
-cat > composer_temp.json << EOF
+cat > composer_temp.json << 'EOF'
 {
     "name": "laravel/laravel",
     "type": "project",
@@ -46,7 +46,7 @@ cat > composer_temp.json << EOF
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "laravel/framework": "^11.0",
+        "laravel/framework": "^12.0|^13.0",
         "ssh521/simple-posts": "dev-main"
     },
     "require-dev": {
@@ -112,6 +112,7 @@ cat > composer_temp.json << EOF
 EOF
 
 mv composer_temp.json composer.json
+rm -f composer.lock
 
 # SQLite 데이터베이스 파일 생성
 echo "🗄️  SQLite 데이터베이스를 설정합니다..."
@@ -131,7 +132,7 @@ echo "DB_DATABASE=$(pwd)/database/database.sqlite" >> .env
 
 # 패키지 설치
 echo "📦 패키지를 설치합니다..."
-composer install
+composer update
 
 # 마이그레이션 실행
 echo "🏗️  마이그레이션을 실행합니다..."
